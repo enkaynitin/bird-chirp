@@ -1,0 +1,19 @@
+{% extends generic_base.html %}
+
+{% block content %}
+
+{% csrf_token %}
+
+{% for user in results %}
+    <div class="fieldWrapper">
+        {{ user.firstname }} {{ user.last_name }}
+    </div>
+
+    <form action="url 'chirp:follow' user.id " method="post">
+
+    <input type="submit" name="follow" value="Follow" />
+{% endfor %}
+
+
+{% endblock % }
+

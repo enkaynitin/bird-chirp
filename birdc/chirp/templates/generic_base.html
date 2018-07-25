@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href= "{% static 'chirp/style.css' %}" />
     <title>{% block title %}Bird Chirp{% endblock %}</title>
 </head>
 
@@ -11,13 +10,15 @@
     <div id="sidebar">
         {% block sidebar %}
         <ul>
-            <li><a href="/chirp/">Home</a></li>
+            <li><a href="{% url 'chirp:index' %}">Home</a></li>
         </ul>
 
-        <form action="/chirp/search/" method="GET">
-            <input type="text" name="search" placeholder="search" />
-            <input type="submit" value="Submit" />
-        </form>
+         <h1>Search</h1>
+            <form action="/chirp/search/" method="GET">
+                <label for="q">Search: </label>
+                <input type="text" name="q" value="{{ query|escape }}">
+                <input type="submit" value="Search">
+            </form>
 
         {% endblock %}
     </div>

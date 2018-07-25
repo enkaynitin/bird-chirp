@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
 from django.db.models import Q
 from .forms import SearchForm, ChirpForm
 from .models import Chirp
+from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
@@ -22,21 +23,21 @@ def index(request):
 
     return render(request, 'chirp/chirp.html', {'cform':cform})
 
-
-def searchUser(request):
-    print(request.GET)
-    if 'search' in request.GET:
-
-        search = request.GET['search']
-        results = find_user_by_name(search)
-
-        return HttpResponseRedirect(
-            request,
-            'chirp/search_user.html',
-            {
-                'results':results
-            }
+@csrf_exempt
+def search(request):
+    query = request.GET.get('q', '')
+    if query:
+        qset = (
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query)
         )
+        results = User.objects.filter(qset).distinct()
+    else:
+        results = []
+    return render(request, 'chirp/search_user.html', {
+        "results": results,
+        "query": query
+    })
 
 
 

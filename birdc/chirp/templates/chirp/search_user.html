@@ -1,19 +1,24 @@
-{% extends generic_base.html %}
+{% extends "generic_base.html" %}
 
 {% block content %}
 
 {% csrf_token %}
 
-{% for user in results %}
-    <div class="fieldWrapper">
-        {{ user.firstname }} {{ user.last_name }}
-    </div>
+{% if query %}
+     <h2>Results for "{{ query|escape }}":</h2>
+    {% if results %}
+        {% for user in results %}
+        <div class="fieldWrapper">
+            {{ user.first_name }} {{ user.last_name }}
+        </div>
 
-    <form action="url 'chirp:follow' user.id " method="post">
+        <form action="url 'chirp:follow' user.id " method="post">
+            <input type="submit" name="follow" value="Follow" />
+        </form>
+        {% endfor %}
+    {% else %}
+         <p>No Users found</p>
+    {% endif %}
+{% endif %}
 
-    <input type="submit" name="follow" value="Follow" />
-{% endfor %}
-
-
-{% endblock % }
-
+{% endblock %}
